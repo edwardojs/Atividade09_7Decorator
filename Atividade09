@@ -1,0 +1,59 @@
+# Classe base: Ingresso
+class Ingresso:
+    def get_descricao(self):
+        return "Ingresso padrão"
+    
+    def get_preco(self):
+        return 20.00  # preço base
+
+
+# Classe abstrata Decorator
+class IngressoDecorator(Ingresso):
+    def __init__(self, ingresso):
+        self._ingresso = ingresso
+
+    def get_descricao(self):
+        return self._ingresso.get_descricao()
+    
+    def get_preco(self):
+        return self._ingresso.get_preco()
+
+
+# Decorador concreto: Pipoca
+class ExtraPipocaDecorator(IngressoDecorator):
+    def get_descricao(self):
+        return self._ingresso.get_descricao() + ", Pipoca média"
+    
+    def get_preco(self):
+        return self._ingresso.get_preco() + 10.00
+
+
+# Decorador concreto: Assento Reclinável
+class AssentoReclinavelDecorator(IngressoDecorator):
+    def get_descricao(self):
+        return self._ingresso.get_descricao() + ", Assento reclinável"
+    
+    def get_preco(self):
+        return self._ingresso.get_preco() + 8.00
+
+
+# Decorador concreto: Combo Refrigerante
+class ExtraRefrigeranteDecorator(IngressoDecorator):
+    def get_descricao(self):
+        return self._ingresso.get_descricao() + ", Refrigerante grande"
+    
+    def get_preco(self):
+        return self._ingresso.get_preco() + 7.00
+
+
+# --- Testando ---
+if __name__ == "__main__":
+    ingresso = Ingresso()
+    print(f"{ingresso.get_descricao()} - R$ {ingresso.get_preco():.2f}")
+
+    # Adicionando extras
+    ingresso_com_pipoca = ExtraPipocaDecorator(ingresso)
+    ingresso_com_pipoca_reclinavel = AssentoReclinavelDecorator(ingresso_com_pipoca)
+    ingresso_com_tudo = ExtraRefrigeranteDecorator(ingresso_com_pipoca_reclinavel)
+
+    print(f"{ingresso_com_tudo.get_descricao()} - R$ {ingresso_com_tudo.get_preco():.2f}")
